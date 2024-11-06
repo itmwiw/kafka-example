@@ -20,7 +20,8 @@
    ```
    Alternatively, you can directly deploy the resources in the `kafka-resources` folder using:
    ```bash
-   oc apply -f kafka-resources/
+   oc create ns kafka-example
+   oc -n kafka-example apply -f kafka-resources/
    ```
 
 ---
