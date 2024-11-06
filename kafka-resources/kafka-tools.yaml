@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-tools
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      kafka: tools
+  template:
+    metadata:
+      name: kafka-tools
+      labels:
+        kafka: tools
+    spec:
+      affinity: {}
+      containers:
+        - command:
+            - /bin/sh
+            - "-c"
+            - "sleep 3600"
+          image: 'quay.io/strimzi/kafka:latest-kafka-3.8.1'
+          imagePullPolicy: IfNotPresent
+          name: kafka-tools
+          resources:
+            limits:
+              cpu: '0.5'
+              memory: 1Gi
+            requests:
+              cpu: '0.5'
+              memory: 1Gi
+      restartPolicy: Always

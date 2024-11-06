@@ -1,0 +1,67 @@
+# Basic configuration (required)
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: my-kafka-cluster
+spec:
+  kafka:
+    version: "3.8.0"
+    metadataVersion: "3.8"
+    replicas: 3
+    listeners:
+      - name: plain
+        port: 9092
+        type: internal
+        tls: false
+      - name: tls
+        port: 9093
+        type: internal
+        tls: true
+      - name: external
+        port: 9094
+        type: route
+        tls: true
+    config:
+      auto.create.topics.enable: "false"
+      offsets.topic.replication.factor: 3
+      transaction.state.log.replication.factor: 3
+      transaction.state.log.min.isr: 2
+      default.replication.factor: 3
+      min.insync.replicas: 2
+    resources:
+      requests:
+        memory: 6Gi
+        cpu: "2"
+      limits:
+        memory: 6Gi
+        cpu: "2"
+    logging:
+      type: inline
+      loggers:
+        kafka.root.logger.level: INFO
+    readinessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    livenessProbe:
+      initialDelaySeconds: 15
+      timeoutSeconds: 5
+    jvmOptions:
+      -Xms: 4096m
+      -Xmx: 4096m
+    storage:
+      type: jbod
+      volumes:
+      - id: 0
+        type: persistent-claim
+        size: 10Gi
+        deleteClaim: false
+  zookeeper:
+    replicas: 3
+    storage:
+      type: persistent-claim
+      size: 10Gi
+      deleteClaim: false
+  entityOperator:
+    topicOperator: {}
+    userOperator: {}
+
