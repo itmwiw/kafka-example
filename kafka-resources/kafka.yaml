@@ -52,6 +52,35 @@ spec:
         port: 9094
         type: route
         tls: true
+      - name: keycloak
+        port: 9095
+        type: internal
+        tls: false
+        authentication:
+          type: oauth
+          # clientId: kafka-broker
+          # clientSecret:
+            # key: secret
+            # secretName: broker-oauth-secret
+          validIssuerUri: http://keycloak-bitnami:80/auth/realms/kafka-authz
+          jwksEndpointUri: http://keycloak-bitnami:80/auth/realms/kafka-authz/protocol/openid-connect/certs
+          userNameClaim: preferred_username
+          checkAccessTokenType: false
+          customClaimCheck: "@.typ && @.typ == 'Bearer'"
+
+          # the next option is only available since Strimzi 0.20.0
+          # remove it if using an older version of Strimzi
+          maxSecondsWithoutReauthentication: 3600
+          # tlsTrustedCertificates:
+          # - secretName: ca-truststore
+            # certificate: ca.crt
+    authorization:
+      type: keycloak
+      clientId: kafka
+      tokenEndpointUri: http://keycloak-bitnami:80/auth/realms/kafka-authz/protocol/openid-connect/token
+      delegateToKafkaAcls: true
+      superUsers:
+      - service-account-kafka
     config:
       auto.create.topics.enable: "false"
       offsets.topic.replication.factor: 3
