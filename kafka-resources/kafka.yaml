@@ -62,8 +62,8 @@ spec:
           # clientSecret:
             # key: secret
             # secretName: broker-oauth-secret
-          validIssuerUri: http://keycloak-bitnami:80/auth/realms/kafka-authz
-          jwksEndpointUri: http://keycloak-bitnami:80/auth/realms/kafka-authz/protocol/openid-connect/certs
+          validIssuerUri: http://keycloak.apps.okd.advatys.com/realms/kafka-authz
+          jwksEndpointUri: http://keycloak.apps.okd.advatys.com/realms/kafka-authz/protocol/openid-connect/certs
           userNameClaim: preferred_username
           checkAccessTokenType: false
           customClaimCheck: "@.typ && @.typ == 'Bearer'"
@@ -77,7 +77,7 @@ spec:
     authorization:
       type: keycloak
       clientId: kafka
-      tokenEndpointUri: http://keycloak-bitnami:80/auth/realms/kafka-authz/protocol/openid-connect/token
+      tokenEndpointUri: http://keycloak.apps.okd.advatys.com/realms/kafka-authz/protocol/openid-connect/token
       delegateToKafkaAcls: true
       superUsers:
       - service-account-kafka
