@@ -43,12 +43,12 @@ oc -n kafka-example exec -it deploy/kafka-tools -- bash
 
 2. **Send a Message:**
    ```bash
-   ./bin/kafka-console-producer.sh --bootstrap-server my-simple-cluster-kafka-bootstrap:9092 --topic my-topic
+   ./bin/kafka-console-producer.sh --bootstrap-server my-simple-cluster-kafka-bootstrap:9092 --topic my-simple-topic
    ```
 
 3. **Consume Messages:**
    ```bash
-   ./bin/kafka-console-consumer.sh --bootstrap-server my-simple-cluster-kafka-bootstrap:9092 --topic my-topic --from-beginning
+   ./bin/kafka-console-consumer.sh --bootstrap-server my-simple-cluster-kafka-bootstrap:9092 --topic my-simple-topic --from-beginning
    ```
 
 ### Real-Time Message Consumption
@@ -58,31 +58,16 @@ To simulate real-time messaging, open two terminal sessions:
 - **Terminal 1 (Message Consumer):**
   ```bash
   oc -n kafka-example exec -it deploy/kafka-tools -- bash
-  ./bin/kafka-console-consumer.sh --bootstrap-server my-simple-cluster-kafka-bootstrap:9092 --topic my-topic --from-beginning
+  ./bin/kafka-console-consumer.sh --bootstrap-server my-simple-cluster-kafka-bootstrap:9092 --topic my-simple-topic --from-beginning
   ```
 
 - **Terminal 2 (Message Producer):**
   ```bash
   oc -n kafka-example exec -it deploy/kafka-tools -- bash
-  ./bin/kafka-console-producer.sh --bootstrap-server my-simple-cluster-kafka-bootstrap:9092 --topic my-topic
+  ./bin/kafka-console-producer.sh --bootstrap-server my-simple-cluster-kafka-bootstrap:9092 --topic my-simple-topic
   ```
 
 Type messages in **Terminal 2** to send them to Kafka. Messages will appear in **Terminal 1**, allowing you to observe real-time message streaming, similar to a chat interface.
-
-### Authentication and authorization
-
-Up until now we used 'my-kafka-cluster' resources along with the plain listener without any authentication nor authorization. It is possible to restrict access to Kafka though. In this example we'll use the 'my-oauth-kafka-cluster' resources which implent both authentiation and authorization. 
-
-As a prerequisite, please import the kafka-authz-realm.json to your keaycloak instance.
-This will configure the authorization server in keycloak as well as give 'Dev Team A' and 'Dev Team B' some permissions.
-
-Open a bash session on the `kafka-tools` deployment:
-```bash
-oc -n kafka-example exec -it deploy/kafka-tools -- bash
-```
-
-- **Producer:**
-
 
 ### Configuring Authentication and Authorization with OAuth in Kafka
 
