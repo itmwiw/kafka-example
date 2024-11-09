@@ -12,7 +12,7 @@ spec:
 apiVersion: kafka.strimzi.io/v1beta2
 kind: KafkaTopic
 metadata:
-  name: my-topic
+  name: my-oauth-topic
   labels:
     strimzi.io/cluster: my-oauth-kafka-cluster
 spec:
