@@ -130,8 +130,6 @@ Not authorized to access topics: [my-topic].
 ```
 In fact, 'team-a-client' can only push to topics that start with ‘a_’.
 
-**Adjust the Topic Name:**
-
 Since 'Dev Team A' is only authorized to produce messages to topics starting with `a_`, let's change the topic name and try again:
 
 ```bash
