@@ -7,7 +7,6 @@ metadata:
 spec:
   replicas: 3
   roles:
-    - controller
     - broker
   resources:
     requests:
