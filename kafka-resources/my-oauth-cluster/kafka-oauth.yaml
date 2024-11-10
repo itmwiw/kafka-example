@@ -46,27 +46,14 @@ spec:
         tls: false
         authentication:
           type: oauth
-          # clientId: kafka-broker
-          # clientSecret:
-            # key: secret
-            # secretName: broker-oauth-secret
           validIssuerUri: http://keycloak.apps.okd.advatys.com/realms/kafka-authz
           jwksEndpointUri: http://keycloak.apps.okd.advatys.com/realms/kafka-authz/protocol/openid-connect/certs
           userNameClaim: preferred_username
           checkAccessTokenType: false
           customClaimCheck: "@.typ && @.typ == 'Bearer'"
-
-          # the next option is only available since Strimzi 0.20.0
-          # remove it if using an older version of Strimzi
           maxSecondsWithoutReauthentication: 3600
-          # tlsTrustedCertificates:
-          # - secretName: ca-truststore
-            # certificate: ca.crt
     authorization:
-      type: keycloak
-      clientId: kafka
-      tokenEndpointUri: http://keycloak.apps.okd.advatys.com/realms/kafka-authz/protocol/openid-connect/token
-      delegateToKafkaAcls: true
+      type: simple
       superUsers:
       - service-account-kafka
     config:

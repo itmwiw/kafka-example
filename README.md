@@ -155,3 +155,5 @@ Strimzi Kafka supports the following authorization modes:
 - **OPA**: Integrates with [Open Policy Agent](https://www.openpolicyagent.org/) for policy-based authorization.
 - **Keycloak**: Leverages Keycloak for authorization, as demonstrated in the example above.
 - **Custom**: Allows adding custom authorizer JAR files to the container image. More information can be found [here](https://strimzi.io/docs/operators/latest/configuring.html#type-KafkaAuthorizationCustom-reference).
+
+As for authentication more information can be found [here](https://strimzi.io/docs/operators/latest/configuring.html#type-KafkaListenerAuthenticationOAuth-reference)
