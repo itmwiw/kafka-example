@@ -75,7 +75,7 @@ Up until now, we have been using the `my-simple-cluster` resources with the plai
 
 #### Prerequisites
 
-Before proceeding, import the `kafka-authz-realm.json` file into your Keycloak instance. This will configure the authorization server in Keycloak and grant appropriate permissions to 'Dev Team A' and 'Dev Team B'.
+Before proceeding, import the `kafka-authz-realm.json` file into your Keycloak instance. This will create the necessary clients and configure the authorization server in Keycloak. The Keycloak authorization setup is not required in this example, as we are using the Simple authorization mode, where ACLs are configured using the `KafkaUser` custom resources.
 
 #### Client configuration
 
@@ -105,31 +105,31 @@ EOF
 Next, let's try sending a message to the Kafka topic `my-topic` using the `team-a-client`:
 
 ```bash
-./bin/kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic my-topic --producer.config=/tmp/team-a-client.properties
+./bin/kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic a_messages --producer.config=/tmp/team-a-client.properties
 ```
 
 Type the message `Hello World` and hit Enter. You should encounter an error similar to:
 
 ```
-Not authorized to access topics: [my-topic].
+Not authorized to access topics: [a_messages].
 ```
-In fact, 'team-a-client' can only push to topics that start with ‘a_’.
+In fact, 'team-a-client' can only push to the 'my-topic' topic.
 
-Since 'Dev Team A' is only authorized to produce messages to topics starting with `a_`, let's change the topic name and try again:
+Let's change the topic name and try again:
 
 ```bash
-./bin/kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic a_messages --producer.config=/tmp/team-a-client.properties
+./bin/kafka-console-producer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic my-topic --producer.config=/tmp/team-a-client.properties
 ```
 
-You can now successfully send the message, and you should see an output similar to:
+You can now successfully send the message.
 
 
 #### Kafka Consumer
 
-Next, let's consume the messages from the `a_messages` topic. Run the following command:
+Next, let's consume the messages from the `my-topic` topic. Run the following command:
 
 ```bash
-./bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic a_messages --from-beginning --consumer.config=/tmp/team-a-client.properties
+./bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic my-topic --from-beginning --consumer.config=/tmp/team-a-client.properties
 ```
 
 Since a consumer group is not specified, a random group name will be generated. However, you'll encounter an error:
@@ -138,14 +138,14 @@ Since a consumer group is not specified, a random group name will be generated. 
 Not authorized to access the group: console-consumer-55841
 ```
 
-This happens because 'Dev Team A' only has access to consumer groups with names starting with `a_`. Let's specify a custom consumer group name that starts with `a_`:
+This happens because 'Dev Team A' only has access to 'my-group' consumer group. Let's specify the correct consumer group:
 
 ```bash
-./bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic a_messages \
-  --from-beginning --consumer.config=/tmp/team-a-client.properties --group a_consumer_group_1
+./bin/kafka-console-consumer.sh --bootstrap-server my-cluster-kafka-bootstrap:9092 --topic my-topic \
+  --from-beginning --consumer.config=/tmp/team-a-client.properties --group my-group
 ```
 
-At this point, you should be able to consume all messages from the `a_messages` topic.
+At this point, you should be able to consume all messages from the `my-topic` topic.
 
 #### Additional information
 
