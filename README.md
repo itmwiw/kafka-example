@@ -146,3 +146,12 @@ This happens because 'Dev Team A' only has access to consumer groups with names 
 ```
 
 At this point, you should be able to consume all messages from the `a_messages` topic.
+
+#### Additional information
+
+Strimzi Kafka supports the following authorization modes:
+
+- **Simple**: Uses the `KafkaUser` resource to manage ACLs.
+- **OPA**: Integrates with [Open Policy Agent](https://www.openpolicyagent.org/) for policy-based authorization.
+- **Keycloak**: Leverages Keycloak for authorization, as demonstrated in the example above.
+- **Custom**: Allows adding custom authorizer JAR files to the container image. More information can be found [here](https://strimzi.io/docs/operators/latest/configuring.html#type-KafkaAuthorizationCustom-reference).
